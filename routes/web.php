@@ -19,22 +19,18 @@ Route::get('/', function () {
     return view('location');
 });
 
-// dd(request()->file('csv')->get());
+
 Route::get('upload', [CsvUploadController::class, 'index'])->name('upload');
 Route::post('upload', [CsvUploadController::class, 'store'])->name('upload.csv');
-// Route::post('/upload', function (){
-//     dd(request()->all());
-// })->name('upload.csv');
 
 Route::get('/clear-cache', function () {
-
     Artisan::call('optimize');
-    Artisan::call('optimize:clear');
     Artisan::call('config:cache');
     Artisan::call('route:clear');
     Artisan::call('view:cache');
     Artisan::call('view:clear');
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
+    Artisan::call('optimize:clear');
     return "Cache cleared successfully";
  });

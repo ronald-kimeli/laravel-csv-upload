@@ -2,8 +2,8 @@ import 'jquery/dist/jquery.min.js';
 import $ from 'jquery';
 import jQuery from 'jquery';
 
-jQuery(function() {
-    $('#submitButton').on('click',function(e) {
+jQuery(function () {
+    $('#submitButton').on('click', function (e) {
         e.preventDefault();
         const postcode = $('#postcode').val();
         const api_key = $('#api_key').val();
@@ -16,70 +16,73 @@ jQuery(function() {
 
         const fullUrl = url + '?' + param;
 
-            fetchPostcodes();
+        fetchPostcodes();
 
-            function fetchPostcodes() {
-                $.ajax({
-                    type: "GET",
-                    "url": `${fullUrl}`,
-                    // 'data' : `${param}`,
-                    dataType: "json",
-                    "headers": {
-                        "Accept": "application/vnd.api+json",
-                        "Accept": "application/x-www-form-urlencoded"
-                    },
-                    success: function(response) {
-                        // console.log(response.locations);
-                        // console.log(response.status);
-                        $('#message').html('');
-                        $('#message').removeClass('alert alert-warning alert-dismissible fade show');
+        function fetchPostcodes() {
+            $.ajax({
+                type: "GET",
+                "url": `${fullUrl}`,
+                // 'data' : `${param}`,
+                dataType: "json",
+                "headers": {
+                    "Accept": "application/vnd.api+json",
+                    "Accept": "application/x-www-form-urlencoded"
+                },
+                success: function (response) {
 
-                        $('#success').html('');
-                        $('#success').addClass('alert alert-success alert-dismissible fade show');
-                        $('#success').append('<span><strong>Message! </strong>' + response.status + '</span>');
+                    $('#message').html('');
+                    $('#message').removeClass('alert alert-warning alert-dismissible fade show');
 
-                        $('<tr class="bg-light">\
-                                <th scope="col" >ID</th>\
-                                <th scope="col" >Lat</th>\
-                                <th scope="col" >Long</th>\
-                                <th scope="col" >Street_Address</th>\
-                            </tr>').appendTo('thead');
+                    $('#success').html('');
+                    $('#success').addClass('alert alert-success alert-dismissible fade show');
+                    $('#success').append('<span><strong>Message! </strong>' + response.status + '</span>');
 
-                        $('Table').html('');
-                        $.map(response.locations, function ({Lat, Long, Postcode, Street_Address }, index) {
-                                $('Table').append('<tr key=`${index}`>\
-                                <td scope="row">'+index+'</td>\
-                                <td>'+Lat+'</td>\
-                                <td><i class="bi bi-check2-circle green"></i><span class="ms-1">'+ Long +'</span></td>\
-                                <td>'+Street_Address+'</td>\
-                            </tr>'
-                            );
-                        });
+                    $('table').html('');
 
-                         $('#postcode').val('');
-                         $('#api_key').val('');
-                    },
-                    error: function(jqXHR, status, error) {
+                    $('table').append('<thead>\
+                            <tr>\
+                            <th scope="col">ID</th>\
+                            <th scope="col">Lat</th>\
+                            <th scope="col">Long</th>\
+                            <th scope="col">Street_Address</th>\
+                            </tr>\
+                           </thead>');
 
-                        const errors = jqXHR.responseJSON.status;
+                    $.map(response.locations, function ({ Lat, Long, Street_Address }, index) {
+                        $('table').append('<tbody>\
+                                <tr key=`${index}`>\
+                                <td scope="row">'+ index + '</td>\
+                                <td>'+ Lat + '</td>\
+                                <td><i class="bi bi-check2-circle green"></i><span class="ms-1">'+ Long + '</span></td>\
+                                <td>'+ Street_Address + '</td>\
+                                </tr>\
+                                </tbody>');
+                    });
 
-                        $('Table').html('');
+                    $('#postcode').val('');
+                    $('#api_key').val('');
+                },
+                error: function (jqXHR, status, error) {
 
-                        $('#success').html('');
-                        $('#success').removeClass('alert alert-success alert-dismissible fade show');
+                    const errors = jqXHR.responseJSON.status;
 
-                        $('#message').html('');
-                        $('#message').addClass(
-                            'alert alert-warning alert-dismissible fade show');
-                        $('#message').append('<span><strong>Message! </strong>' +
-                            errors +
-                            '</span>');
+                    $('table').html('');
 
-                        //  $('#postcode').val('');
-                        //  $('#api_key').val('');
-                    }
-                });
-            }
+                    $('#success').html('');
+                    $('#success').removeClass('alert alert-success alert-dismissible fade show');
+
+                    $('#message').html('');
+                    $('#message').addClass(
+                        'alert alert-warning alert-dismissible fade show');
+                    $('#message').append('<span><strong>Message! </strong>' +
+                        errors +
+                        '</span>');
+
+                    //  $('#postcode').val('');
+                    //  $('#api_key').val('');
+                }
+            });
+        }
 
     });
 });

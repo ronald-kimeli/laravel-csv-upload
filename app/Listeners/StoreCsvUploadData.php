@@ -33,10 +33,11 @@ class StoreCsvUploadData
 
         #Ensure csv has headers to iterate through
         $reader->setHeaderOffset(0);
+        $records = $reader->getRecords();
 
         $locations = [];
 
-        foreach ($reader as $record) {
+        foreach ($records as $record) {
             $locations[] = [
                 'Street_Address' => preg_replace('/[^a-zA-Z0-9 ]/m', '',  $record['Street_Address']),# Since we have some special characters
                 'Postcode' => $record['Postcode'],
@@ -50,7 +51,7 @@ class StoreCsvUploadData
         foreach (array_chunk($locations, 1000) as $locationChunk) {
              CsvUpload::insert($locationChunk);
         }
-        
+
         #Delete the file after processing
         /**
          * We shall insert all processed data to database to track record
