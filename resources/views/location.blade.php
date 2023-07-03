@@ -50,7 +50,7 @@
                 <div class="card shadow rounded">
                     <div class="card-header">
                         <h4>Find Location through Postcode
-                            <button type="button" style="text-decoration:none" class="btn btn-success text-dark float-end"
+                            <button type="button" style="text-decoration:none" class="btn btn-success text-dark float-end col-auto"
                                 data-bs-toggle="modal" data-bs-target="#exampleModal">YOUR API KEY</button>
                         </h4>
                     </div>
