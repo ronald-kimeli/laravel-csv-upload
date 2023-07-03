@@ -39,7 +39,7 @@ class StoreCsvUploadData
 
         foreach ($records as $record) {
             $locations[] = [
-                'Street_Address' => preg_replace('/[^a-zA-Z0-9 ]/m', '',  $record['Street_Address']),# Since we have some special characters
+                'Street_Address' => preg_replace('/[^a-zA-Z0-9 ]/m', '',  $record['Street_Address']), # Since we have some special characters
                 'Postcode' => $record['Postcode'],
                 'Lat' => $record['Lat'],
                 'Long' => $record['Long'],
@@ -49,7 +49,7 @@ class StoreCsvUploadData
 
         #We will send in chunks to avoid 50k plus record inserted at once
         foreach (array_chunk($locations, 1000) as $locationChunk) {
-             CsvUpload::insert($locationChunk);
+            CsvUpload::insert($locationChunk);
         }
 
         #Delete the file after processing
